@@ -3,4 +3,9 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+
+    <color name="linegraph_xy_divider">#dddddd</color>
+    <color name="linegraph_text">#999999</color>
+    <color name="linegraph_line">#28c99f</color>
+    <color name="linegraph_point">#ffffff</color>
 </resources>
