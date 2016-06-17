@@ -17,10 +17,10 @@ import java.util.List;
 public class LineGraphActivity extends BaseActivity {
 
     private LineGraphView mLineGraph;
-    private List<Point> mPoint = Arrays.asList(new Point(1,136),new Point(2,187),new Point(3,156));
-    private List<String> mX = Arrays.asList("1","2","3");
-    private int maxY = 200;
-    private int minY = 125;
+    private List<Point> mPoint = Arrays.asList(new Point(1,915),new Point(2,1025),new Point(3,1011),new Point(4,1185),new Point(5,988));
+    private List<String> mX = Arrays.asList("1","2","3","4","5");
+    private int maxY = 1253;
+    private int minY = 876;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

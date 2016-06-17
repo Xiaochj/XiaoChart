@@ -3,10 +3,10 @@ package com.chart.xiao.xiaochart;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.graphics.Paint.Align;
 import android.graphics.Path;
 import android.graphics.Point;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 
 import com.chart.xiao.sample.R;
@@ -23,8 +23,10 @@ import java.util.List;
 
 public class LineGraphView extends View {
 
-	//坐标到边界的距离
-	private static final int PADDING_LEHGTH = 25;
+	//竖直方向坐标到边界的距离
+	private static int PADDING_LEHGTH_Y = 25;
+	//水平方向坐标到边界距离
+	private static int PADDING_LEHGTH_X = 25;
 	//x轴坐标点分成多少分
 	private static int DIVISION_X =6;
 	//y轴坐标点分成多少分
@@ -95,44 +97,51 @@ public class LineGraphView extends View {
 
 	@Override
 	protected void onDraw(Canvas canvas) {
-		int spacing_x = (getMeasuredWidth()-PADDING_LEHGTH) / DIVISION_X;
-		int spacing_y = (getMeasuredHeight()-PADDING_LEHGTH) / DIVISION_Y;
 		mPaint = new Paint();
-		//设置画笔颜色
-		mPaint.setColor(getResources().getColor(R.color.linegraph_xy_divider));
 		//设置是否有锯齿
 		mPaint.setAntiAlias(true);
 		//设置画笔的宽度
 		mPaint.setStrokeWidth((float) 1.0);
 		//设置画笔的字体大小，20px
 		mPaint.setTextSize(20);
+		float fontHeight = mPaint.getFontMetrics().bottom - mPaint.getFontMetrics().top;
+		//y轴每段的实际代表长度
+		int scaleY = (maxY-minY)/DIVISION_Y;
+		PADDING_LEHGTH_X = (int) (mPaint.measureText(String.valueOf((DIVISION_Y-1)*scaleY+minY))+5);
+		//屏幕上x轴的等分距离px
+		int spacing_x = (getMeasuredWidth()-PADDING_LEHGTH_X) / DIVISION_X;
+		//屏幕上y轴的等分距离px
+		int spacing_y = (getMeasuredHeight()-PADDING_LEHGTH_Y) / DIVISION_Y;
+		//画y轴的坐标点
+		mPaint.setTextAlign(Paint.Align.RIGHT);//设置文本居右对齐
+		mPaint.setColor(getResources().getColor(R.color.linegraph_text));
+		canvas.drawText(minY+"", mPaint.measureText(minY+""), getMeasuredHeight()-PADDING_LEHGTH_Y, mPaint);
+		for(int y = 1; y < DIVISION_Y; y++){
+			canvas.drawText(String.valueOf(y*scaleY+minY), mPaint.measureText(String.valueOf(y*scaleY+minY)), getMeasuredHeight()-PADDING_LEHGTH_Y-spacing_y*y+10, mPaint);
+		}
+		canvas.drawText(String.valueOf(DIVISION_Y*scaleY+minY), mPaint.measureText(String.valueOf(DIVISION_Y*scaleY+minY)), getMeasuredHeight()-PADDING_LEHGTH_Y-spacing_y*DIVISION_Y+15, mPaint);
+		//画x轴坐标点
+		mPaint.setTextAlign(Paint.Align.CENTER);//设置文本居中对齐
+		canvas.drawText(dateX.get(0), PADDING_LEHGTH_X, getMeasuredHeight(), mPaint);
+		for(int x = 1;x < DIVISION_X; x++){
+			canvas.drawText(dateX.get(x), PADDING_LEHGTH_X+spacing_x*x, getMeasuredHeight(), mPaint);
+		}
+		canvas.drawText(dateX.get(DIVISION_X), PADDING_LEHGTH_X+spacing_x*(DIVISION_X)-5, getMeasuredHeight(), mPaint);
+		//设置画笔颜色
+		mPaint.setColor(getResources().getColor(R.color.linegraph_xy_divider));
 		//画y轴坐标
-		canvas.drawLine(PADDING_LEHGTH, getMeasuredHeight()-PADDING_LEHGTH, PADDING_LEHGTH, 0, mPaint);
+		canvas.drawLine(PADDING_LEHGTH_X, getMeasuredHeight()-PADDING_LEHGTH_Y, PADDING_LEHGTH_X, 0, mPaint);
 		//画背景的竖线条纹
 		for(int i = 1;i<=DIVISION_X;i++){
-			canvas.drawLine(PADDING_LEHGTH+spacing_x*i, getMeasuredHeight()-PADDING_LEHGTH, PADDING_LEHGTH+spacing_x*i, 0, mPaint);
+			canvas.drawLine(PADDING_LEHGTH_X+spacing_x*i, getMeasuredHeight()-PADDING_LEHGTH_Y, PADDING_LEHGTH_X+spacing_x*i, 0, mPaint);
 		}
 		//画x轴坐标
 		mPaint.setColor(getResources().getColor(R.color.linegraph_text));
-		canvas.drawLine(PADDING_LEHGTH,getMeasuredHeight()-PADDING_LEHGTH, getMeasuredWidth(), getMeasuredHeight()-PADDING_LEHGTH, mPaint);
+		canvas.drawLine(PADDING_LEHGTH_X,getMeasuredHeight()-PADDING_LEHGTH_Y, getMeasuredWidth(), getMeasuredHeight()-PADDING_LEHGTH_Y, mPaint);
 		//画背景的横线条纹
 		mPaint.setColor(getResources().getColor(R.color.linegraph_xy_divider));
 		for(int i = 1;i<=DIVISION_Y;i++){
-			canvas.drawLine(PADDING_LEHGTH,getMeasuredHeight()-PADDING_LEHGTH-spacing_y*i, getMeasuredWidth(), getMeasuredHeight()-PADDING_LEHGTH-spacing_y*i, mPaint);
-		}
-		//画y轴的坐标点
-		mPaint.setTextAlign(Align.RIGHT);//设置文本居右对齐
-		mPaint.setColor(getResources().getColor(R.color.linegraph_text));
-		canvas.drawText(minY+"", PADDING_LEHGTH-5, getMeasuredHeight()-PADDING_LEHGTH, mPaint);
-		int scaleY = (maxY-minY)/DIVISION_Y;
-		for(int y = 1; y <= DIVISION_Y; y++){
-			canvas.drawText(String.valueOf(y*scaleY+minY), PADDING_LEHGTH-5, getMeasuredHeight()-PADDING_LEHGTH-spacing_y*y+10, mPaint);
-		}
-		//画x轴坐标点
-		mPaint.setTextAlign(Align.CENTER);//设置文本居中对齐
-		canvas.drawText(dateX.get(0), PADDING_LEHGTH, getMeasuredHeight(), mPaint);
-		for(int x = 1;x <= DIVISION_X; x++){
-			canvas.drawText(dateX.get(x), PADDING_LEHGTH+spacing_x*x, getMeasuredHeight(), mPaint);
+			canvas.drawLine(PADDING_LEHGTH_X,getMeasuredHeight()-PADDING_LEHGTH_Y-spacing_y*i, getMeasuredWidth(), getMeasuredHeight()-PADDING_LEHGTH_Y-spacing_y*i, mPaint);
 		}
 		mPaint.setColor(getResources().getColor(R.color.linegraph_line));
 		mPaint.setStyle(Paint.Style.STROKE);
@@ -140,26 +149,41 @@ public class LineGraphView extends View {
 			mPaint.setStrokeWidth(2);
 			//将点与点之间连线，完成折线图
 			for(int i = 1; i< mPoint.size();i++){
-				canvas.drawLine(PADDING_LEHGTH+spacing_x*(mPoint.get(i-1).x-1), getMeasuredHeight()-PADDING_LEHGTH -spacing_y*mPoint.get(i-1).y, PADDING_LEHGTH+spacing_x*(mPoint.get(i).x-1), getMeasuredHeight()-PADDING_LEHGTH -spacing_y*mPoint.get(i).y, mPaint);
+				int tempYWhole1 = (mPoint.get(i-1).y - minY) / scaleY;
+				int tempYSurplus1 = (mPoint.get(i-1).y - minY) % scaleY;
+				float factY1 = spacing_y * (tempYWhole1 + (float)tempYSurplus1 / scaleY);
+				int tempYWhole2 = (mPoint.get(i).y - minY) / scaleY;
+				int tempYSurplus2 = (mPoint.get(i).y - minY) % scaleY;
+				float factY2 = spacing_y * (tempYWhole2 + (float)tempYSurplus2 / scaleY);
+				canvas.drawLine(PADDING_LEHGTH_X+spacing_x*(mPoint.get(i-1).x-1), getMeasuredHeight()-PADDING_LEHGTH_Y -factY1, PADDING_LEHGTH_X+spacing_x*(mPoint.get(i).x-1), getMeasuredHeight()-PADDING_LEHGTH_Y -factY2, mPaint);
 			}
 			//将点画上去
 			Paint fillPaint = new Paint();
 			fillPaint.setColor(getResources().getColor(R.color.linegraph_point));
 			fillPaint.setStyle(Paint.Style.FILL);
 			for(Point point:mPoint){
-				canvas.drawCircle(PADDING_LEHGTH+spacing_x*(point.x-1), getMeasuredHeight()-PADDING_LEHGTH-spacing_y*point.y, 5, mPaint);
-				canvas.drawCircle(PADDING_LEHGTH+spacing_x*(point.x-1), getMeasuredHeight()-PADDING_LEHGTH-spacing_y*point.y,4,fillPaint);
+				if(point.y >= minY && point.y <= maxY) {
+					int tempYWhole = (point.y - minY) / scaleY;
+					int tempYSurplus = (point.y - minY) % scaleY;
+					float factY = spacing_y * (tempYWhole + (float)tempYSurplus / scaleY);
+					Log.d("lineGraphView",tempYWhole+"----"+tempYSurplus+"----"+factY);
+					canvas.drawCircle(PADDING_LEHGTH_X+spacing_x*(point.x-1), getMeasuredHeight()-PADDING_LEHGTH_Y-factY, 5, mPaint);
+					canvas.drawCircle(PADDING_LEHGTH_X+spacing_x*(point.x-1), getMeasuredHeight()-PADDING_LEHGTH_Y-factY,4,fillPaint);
+				}
 			}
 			mPaint.setStyle(Paint.Style.FILL);
 			Path path = new Path();
 			//将区域初始放在第一个点的x轴上对应位置
-			path.moveTo(PADDING_LEHGTH+spacing_x*(mPoint.get(0).x-1), getMeasuredHeight()-PADDING_LEHGTH);
+			path.moveTo(PADDING_LEHGTH_X+spacing_x*(mPoint.get(0).x-1), getMeasuredHeight()-PADDING_LEHGTH_Y);
 			//划线
 			for(int i= 0;i<mPoint.size();i++){
-				path.lineTo(PADDING_LEHGTH+spacing_x*(mPoint.get(i).x-1), getMeasuredHeight()-PADDING_LEHGTH-spacing_y*mPoint.get(i).y);
+				int tempYWhole = (mPoint.get(i).y - minY) / scaleY;
+				int tempYSurplus = (mPoint.get(i).y - minY) % scaleY;
+				float factY = spacing_y * (tempYWhole + (float)tempYSurplus / scaleY);
+				path.lineTo(PADDING_LEHGTH_X+spacing_x*(mPoint.get(i).x-1), getMeasuredHeight()-PADDING_LEHGTH_Y-factY);
 			}
 			//将最后一个点的位置和x轴的该点位置连上
-			path.lineTo(PADDING_LEHGTH+spacing_x*(mPoint.get(mPoint.size()-1).x-1), getMeasuredHeight()-PADDING_LEHGTH);
+			path.lineTo(PADDING_LEHGTH_X+spacing_x*(mPoint.get(mPoint.size()-1).x-1), getMeasuredHeight()-PADDING_LEHGTH_Y);
 			mPaint.setAlpha(25);
 			//连成闭合区域
 			canvas.drawPath(path, mPaint);
