@@ -17,8 +17,8 @@ import java.util.List;
 public class LineGraphActivity extends BaseActivity {
 
     private LineGraphView mLineGraph;
-    private List<Point> mPoint = Arrays.asList(new Point(1,915),new Point(2,1025),new Point(3,1011),new Point(4,1185),new Point(5,988));
-    private List<String> mX = Arrays.asList("1","2","3","4","5");
+    private List<Point> mPoint = Arrays.asList(new Point(1,1075),new Point(2,1025),new Point(3,1011),new Point(4,1185),new Point(5,988),new Point(6,1088),new Point(7,988),new Point(8,956));
+    private List<String> mX = Arrays.asList("1","2","3","4","5","6","7","8");
     private int maxY = 1253;
     private int minY = 876;
 

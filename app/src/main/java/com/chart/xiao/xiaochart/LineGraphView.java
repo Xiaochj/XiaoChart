@@ -109,7 +109,7 @@ public class LineGraphView extends View {
 		int scaleY = (maxY-minY)/DIVISION_Y;
 		PADDING_LEHGTH_X = (int) (mPaint.measureText(String.valueOf((DIVISION_Y-1)*scaleY+minY))+5);
 		//屏幕上x轴的等分距离px
-		int spacing_x = (getMeasuredWidth()-PADDING_LEHGTH_X) / DIVISION_X;
+		int spacing_x = (getMeasuredWidth()-PADDING_LEHGTH_X-5) / DIVISION_X;
 		//屏幕上y轴的等分距离px
 		int spacing_y = (getMeasuredHeight()-PADDING_LEHGTH_Y) / DIVISION_Y;
 		//画y轴的坐标点
@@ -119,7 +119,7 @@ public class LineGraphView extends View {
 		for(int y = 1; y < DIVISION_Y; y++){
 			canvas.drawText(String.valueOf(y*scaleY+minY), mPaint.measureText(String.valueOf(y*scaleY+minY)), getMeasuredHeight()-PADDING_LEHGTH_Y-spacing_y*y+10, mPaint);
 		}
-		canvas.drawText(String.valueOf(DIVISION_Y*scaleY+minY), mPaint.measureText(String.valueOf(DIVISION_Y*scaleY+minY)), getMeasuredHeight()-PADDING_LEHGTH_Y-spacing_y*DIVISION_Y+15, mPaint);
+		canvas.drawText(String.valueOf(maxY), mPaint.measureText(String.valueOf(maxY)), getMeasuredHeight()-PADDING_LEHGTH_Y-spacing_y*DIVISION_Y+15, mPaint);
 		//画x轴坐标点
 		mPaint.setTextAlign(Paint.Align.CENTER);//设置文本居中对齐
 		canvas.drawText(dateX.get(0), PADDING_LEHGTH_X, getMeasuredHeight(), mPaint);
