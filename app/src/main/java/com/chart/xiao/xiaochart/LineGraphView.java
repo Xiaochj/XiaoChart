@@ -16,7 +16,7 @@ import java.util.List;
 /**
  * Line Graph
  *
- * created by xiaochj
+ * Created by cjxiao on 2016/6/16.
  */
 
 public class LineGraphView extends BaseView {
@@ -40,7 +40,8 @@ public class LineGraphView extends BaseView {
 	 * 往里面添加点
 	 * @param point
 	 */
-	public void addPoints(List<Point> point){
+	@Override
+	public void addDatas(List point) {
 		this.mPoint = point;
 	}
 

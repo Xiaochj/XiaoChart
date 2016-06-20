@@ -16,6 +16,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".LineGraphActivity"/>
+        <activity android:name=".HistogramActivity"/>
     </application>
 
 </manifest>

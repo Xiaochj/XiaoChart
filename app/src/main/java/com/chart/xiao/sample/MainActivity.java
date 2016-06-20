@@ -45,6 +45,8 @@ public class MainActivity extends AppCompatActivity {
                     mContext.startActivity(mIntent);
                     break;
                 case 1:
+                    mIntent = new Intent(MainActivity.this,HistogramActivity.class);
+                    mContext.startActivity(mIntent);
                     break;
                 case 2:
                     break;

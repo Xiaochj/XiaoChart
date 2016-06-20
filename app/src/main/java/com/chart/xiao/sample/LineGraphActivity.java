@@ -33,6 +33,6 @@ public class LineGraphActivity extends BaseActivity {
         mLineGraph = (LineGraphView)findViewById(R.id.linegraph);
         mLineGraph.addDateX(mX);
         mLineGraph.addMaxAndMinY(maxY,minY);
-        mLineGraph.addPoints(mPoint);
+        mLineGraph.addDatas(mPoint);
     }
 }

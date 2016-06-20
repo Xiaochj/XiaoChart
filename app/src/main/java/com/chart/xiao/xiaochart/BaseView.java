@@ -26,11 +26,16 @@ public abstract class BaseView extends View {
     protected static int DIVISION_X =6;
     //y轴坐标点分成多少分
     protected static final int DIVISION_Y = 6;
+    //y轴每段的实际代表长度
+    protected int scaleY = 0;
+    //屏幕上x轴和y轴的等分距离px
+    protected int spacing_x = 0,spacing_y = 0;
+    //是否显示垂直和水平背景线
+    protected boolean isVerticalBackVisible = true,isHorizontalBackVisible = true;
 
     protected Paint mPaint;
     protected int maxY = 8,minY = 0;
     protected List<String> dateX = Arrays.asList("1","2","3","4","5","6","7");
-    protected int scaleY = 0,spacing_x = 0,spacing_y = 0;
 
     public BaseView(Context context) {
         super(context);
@@ -39,6 +44,12 @@ public abstract class BaseView extends View {
     public BaseView(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
+
+    /**
+     * 抽象方法，往坐标系中添加数据
+     * @param datas
+     */
+    public abstract void addDatas(List datas);
 
     @Override
     protected void onLayout(boolean changed, int left, int top, int right,
@@ -71,6 +82,22 @@ public abstract class BaseView extends View {
     public void addDateX(List<String> dateX){
         this.dateX = dateX;
         DIVISION_X = dateX.size()-1;
+    }
+
+    public boolean isVerticalBackVisible() {
+        return isVerticalBackVisible;
+    }
+
+    public void setVerticalBackVisible(boolean verticalBackVisible) {
+        isVerticalBackVisible = verticalBackVisible;
+    }
+
+    public boolean isHorizontalBackVisible() {
+        return isHorizontalBackVisible;
+    }
+
+    public void setHorizontalBackVisible(boolean horizontalBackVisible) {
+        isHorizontalBackVisible = horizontalBackVisible;
     }
 
     @Override
@@ -110,16 +137,20 @@ public abstract class BaseView extends View {
         //画y轴坐标
         canvas.drawLine(PADDING_LEHGTH_X, getMeasuredHeight()-PADDING_LEHGTH_Y, PADDING_LEHGTH_X, 0, mPaint);
         //画背景的竖线条纹
-        for(int i = 1;i<=DIVISION_X;i++){
-            canvas.drawLine(PADDING_LEHGTH_X+spacing_x*i, getMeasuredHeight()-PADDING_LEHGTH_Y, PADDING_LEHGTH_X+spacing_x*i, 0, mPaint);
+        if(isVerticalBackVisible()) {
+            for (int i = 1; i <= DIVISION_X; i++) {
+                canvas.drawLine(PADDING_LEHGTH_X + spacing_x * i, getMeasuredHeight() - PADDING_LEHGTH_Y, PADDING_LEHGTH_X + spacing_x * i, 0, mPaint);
+            }
         }
         //画x轴坐标
         mPaint.setColor(getResources().getColor(R.color.linegraph_text));
         canvas.drawLine(PADDING_LEHGTH_X,getMeasuredHeight()-PADDING_LEHGTH_Y, getMeasuredWidth(), getMeasuredHeight()-PADDING_LEHGTH_Y, mPaint);
         //画背景的横线条纹
-        mPaint.setColor(getResources().getColor(R.color.linegraph_xy_divider));
-        for(int i = 1;i<=DIVISION_Y;i++){
-            canvas.drawLine(PADDING_LEHGTH_X,getMeasuredHeight()-PADDING_LEHGTH_Y-spacing_y*i, getMeasuredWidth(), getMeasuredHeight()-PADDING_LEHGTH_Y-spacing_y*i, mPaint);
+        if(isHorizontalBackVisible()) {
+            mPaint.setColor(getResources().getColor(R.color.linegraph_xy_divider));
+            for (int i = 1; i <= DIVISION_Y; i++) {
+                canvas.drawLine(PADDING_LEHGTH_X, getMeasuredHeight() - PADDING_LEHGTH_Y - spacing_y * i, getMeasuredWidth(), getMeasuredHeight() - PADDING_LEHGTH_Y - spacing_y * i, mPaint);
+            }
         }
     }
 }
