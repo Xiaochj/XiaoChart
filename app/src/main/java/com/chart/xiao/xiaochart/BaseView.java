@@ -32,6 +32,8 @@ public abstract class BaseView extends View {
     protected int spacing_x = 0,spacing_y = 0;
     //是否显示垂直和水平背景线
     protected boolean isVerticalBackVisible = true,isHorizontalBackVisible = true;
+    //是否显示坐标系
+    protected boolean isRemoveXY = false;
 
     protected Paint mPaint;
     protected int maxY = 8,minY = 0;
@@ -100,6 +102,14 @@ public abstract class BaseView extends View {
         isHorizontalBackVisible = horizontalBackVisible;
     }
 
+    public boolean isRemoveXY() {
+        return isRemoveXY;
+    }
+
+    public void setRemoveXY(boolean removeXY){
+        isRemoveXY = removeXY;
+    }
+
     @Override
     protected void onDraw(Canvas canvas) {
         mPaint = new Paint();
@@ -109,6 +119,7 @@ public abstract class BaseView extends View {
         mPaint.setStrokeWidth((float) 1.0);
         //设置画笔的字体大小，20px
         mPaint.setTextSize(20);
+        if(isRemoveXY())    return;
         float fontHeight = mPaint.getFontMetrics().bottom - mPaint.getFontMetrics().top;
         //y轴每段的实际代表长度
         scaleY = (maxY-minY)/DIVISION_Y;

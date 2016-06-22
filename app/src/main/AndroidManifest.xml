@@ -17,6 +17,7 @@
         </activity>
         <activity android:name=".LineGraphActivity"/>
         <activity android:name=".HistogramActivity"/>
+        <activity android:name=".PieChartActivity"/>
     </application>
 
 </manifest>

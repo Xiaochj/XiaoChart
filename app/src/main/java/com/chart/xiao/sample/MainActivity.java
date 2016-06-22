@@ -49,6 +49,8 @@ public class MainActivity extends AppCompatActivity {
                     mContext.startActivity(mIntent);
                     break;
                 case 2:
+                    mIntent = new Intent(MainActivity.this,PieChartActivity.class);
+                    mContext.startActivity(mIntent);
                     break;
             }
         }
