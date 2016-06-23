@@ -2,6 +2,7 @@ package com.chart.xiao.xiaochart;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.util.AttributeSet;
@@ -56,13 +57,18 @@ public class PieChartView extends BaseView {
         }else{
             radius = getMeasuredWidth()/2-PADDING_LEHGTH_X;
         }
+        canvas.drawCircle(PADDING_LEHGTH_X+radius,PADDING_LEHGTH_Y+radius,radius,mPaint);
         if(mPies.size() > 0) {
-            canvas.drawArc(new RectF(PADDING_LEHGTH_X, PADDING_LEHGTH_Y, PADDING_LEHGTH_X + 2 * radius, PADDING_LEHGTH_Y + 2 * radius), 0, mTempPies.get(0), true, mPaint);
+            Paint tempPaint = new Paint();
+            tempPaint.setStyle(Paint.Style.FILL);
+            tempPaint.setColor(Color.argb(255, (int)(255*Math.random()),(int)(255*Math.random()),(int)(255*Math.random())));
+            canvas.drawArc(new RectF(PADDING_LEHGTH_X, PADDING_LEHGTH_Y, PADDING_LEHGTH_X + 2 * radius, PADDING_LEHGTH_Y + 2 * radius), 0, mTempPies.get(0), true, tempPaint);
             float tempStart = 0, tempEnd = mTempPies.get(0);
-            for (int i = 1; i < mTempPies.size(); i++) {
+            for (int i = 1; i < mTempPies.size(); i++){
+                tempPaint.setColor(Color.argb(255, (int)(255*Math.random()),(int)(255*Math.random()),(int)(255*Math.random())));
                 tempStart += mTempPies.get(i - 1);
                 tempEnd += mTempPies.get(i);
-                canvas.drawArc(new RectF(PADDING_LEHGTH_X, PADDING_LEHGTH_Y, PADDING_LEHGTH_X + 2 * radius, PADDING_LEHGTH_Y + 2 * radius), tempStart, tempEnd, true, mPaint);
+                canvas.drawArc(new RectF(PADDING_LEHGTH_X, PADDING_LEHGTH_Y, PADDING_LEHGTH_X + 2 * radius, PADDING_LEHGTH_Y + 2 * radius), tempStart, tempEnd, true, tempPaint);
             }
         }
     }
