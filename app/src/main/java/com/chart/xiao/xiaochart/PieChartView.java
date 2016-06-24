@@ -60,7 +60,7 @@ public class PieChartView extends BaseView {
         canvas.drawCircle(PADDING_LEHGTH_X+radius,PADDING_LEHGTH_Y+radius,radius,mPaint);
         if(mPies.size() > 0) {
             Paint tempPaint = new Paint();
-            tempPaint.setStyle(Paint.Style.FILL);
+            tempPaint.setStyle(Paint.Style.STROKE);
             tempPaint.setColor(Color.argb(255, (int)(255*Math.random()),(int)(255*Math.random()),(int)(255*Math.random())));
             canvas.drawArc(new RectF(PADDING_LEHGTH_X, PADDING_LEHGTH_Y, PADDING_LEHGTH_X + 2 * radius, PADDING_LEHGTH_Y + 2 * radius), 0, mTempPies.get(0), true, tempPaint);
             float tempStart = 0, tempEnd = mTempPies.get(0);
