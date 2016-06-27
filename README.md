@@ -22,4 +22,4 @@ The base class has its own functions for the children views, such as:
 9.public abstract void addDatas(List datas);  //an abstract function, used to add the datas
 
 If you say that you would like to learn something about how to develop and run the custom chart view, ok, you could read the xiaochart package¡¯s codes. LineGraphView.java, HistogramView.java, PieChartView.java are three children views. BaseView.java is the base view.
-At present, there are only three custom views. We will develop it over and over again.
+At present, there are only three custom views. We will develop it over and over again. 
