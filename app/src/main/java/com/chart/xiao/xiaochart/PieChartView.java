@@ -61,11 +61,13 @@ public class PieChartView extends BaseView {
         mPaint.setAntiAlias(true);
         mPaint.setStrokeWidth(2);
         int radius = 0;
+        //计算半径长度
         if(getMeasuredHeight()< getMeasuredWidth()){
             radius = getMeasuredHeight()/2-PADDING_LEHGTH_Y;
         }else{
             radius = getMeasuredWidth()/2-PADDING_LEHGTH_X;
         }
+        //画出整个饼状图的外部圆轮廓
         canvas.drawCircle(PADDING_LEHGTH_X+radius,PADDING_LEHGTH_Y+radius,radius,mPaint);
         if(mPies.size() > 0) {
             Paint tempPaint = new Paint();
@@ -80,10 +82,13 @@ public class PieChartView extends BaseView {
                 mPieColors.add(tempColor);
                 tempPaint.setColor(tempColor);
                 float tempEnd = mTempPies.get(i);
+                //画出圆弧
                 canvas.drawArc(rectF, tempStart, tempEnd, true, tempPaint);
+                //画出圆弧之间的分割线
                 canvas.drawArc(rectF, tempStart, tempEnd, true, mPaint);
                 tempStart += tempEnd;
             }
+            //加上注释方块以及描述文字
             Paint fontPaint = new Paint();
             fontPaint.setStyle(Paint.Style.STROKE);
             fontPaint.setAntiAlias(true);
@@ -92,10 +97,15 @@ public class PieChartView extends BaseView {
             for(int j = 0;j < mPieColors.size();j++){
                 tempPaint.setColor(mPieColors.get(j));
                 RectF colorRectF = new RectF(2 * (PADDING_LEHGTH_X + radius),PADDING_LEHGTH_Y+j*(RECTF_WIDTH+RECTF_PADDING),2 * (PADDING_LEHGTH_X + radius)+RECTF_WIDTH,PADDING_LEHGTH_Y+j*(RECTF_WIDTH+RECTF_PADDING)+RECTF_WIDTH);
+                //画出来注释方块
                 canvas.drawRoundRect(colorRectF,3,3,tempPaint);
+                //将描述文字加上
                 canvas.drawText(String.valueOf(5*mTempPies.get(j)/18).substring(0,5)+"%",2*(PADDING_LEHGTH_X + radius)+RECTF_WIDTH+RECTF_PADDING,PADDING_LEHGTH_Y+j*(RECTF_WIDTH+RECTF_PADDING)+fontPaint.getFontMetrics().descent-fontPaint.getFontMetrics().ascent,fontPaint);
             }
         }
+        //将list置为空，防止内存泄漏
         mPieColors = null;
+        mTempPies = null;
+        mPies = null;
     }
 }

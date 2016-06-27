@@ -93,6 +93,7 @@ public class LineGraphView extends BaseView {
 			//连成闭合区域
 			canvas.drawPath(path, mPaint);
 		}
+		mPoint = null;
 	}
 }
 
