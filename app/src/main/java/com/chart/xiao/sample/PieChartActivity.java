@@ -14,7 +14,7 @@ import java.util.List;
 
 public class PieChartActivity extends BaseActivity {
     private PieChartView mPieChartView;
-    private List<Float> mPies = Arrays.asList((float)12,(float)12,(float)12,(float)12,(float)12);
+    private List<Float> mPies = Arrays.asList((float)21,(float)12,(float)35,(float)28,(float)18);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

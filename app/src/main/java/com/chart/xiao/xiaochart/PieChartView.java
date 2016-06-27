@@ -51,6 +51,8 @@ public class PieChartView extends BaseView {
         super.onDraw(canvas);
         mPaint.setColor(getResources().getColor(R.color.linegraph_line));
         mPaint.setStyle(Paint.Style.STROKE);
+        mPaint.setAntiAlias(true);
+        mPaint.setStrokeWidth(2);
         int radius = 0;
         if(getMeasuredHeight()< getMeasuredWidth()){
             radius = getMeasuredHeight()/2-PADDING_LEHGTH_Y;
@@ -60,15 +62,17 @@ public class PieChartView extends BaseView {
         canvas.drawCircle(PADDING_LEHGTH_X+radius,PADDING_LEHGTH_Y+radius,radius,mPaint);
         if(mPies.size() > 0) {
             Paint tempPaint = new Paint();
-            tempPaint.setStyle(Paint.Style.STROKE);
-            tempPaint.setColor(Color.argb(255, (int)(255*Math.random()),(int)(255*Math.random()),(int)(255*Math.random())));
-            canvas.drawArc(new RectF(PADDING_LEHGTH_X, PADDING_LEHGTH_Y, PADDING_LEHGTH_X + 2 * radius, PADDING_LEHGTH_Y + 2 * radius), 0, mTempPies.get(0), true, tempPaint);
-            float tempStart = 0, tempEnd = mTempPies.get(0);
-            for (int i = 1; i < mTempPies.size(); i++){
+            tempPaint.setStyle(Paint.Style.FILL);
+            tempPaint.setAntiAlias(true);
+            RectF rectF = new RectF(PADDING_LEHGTH_X, PADDING_LEHGTH_Y, PADDING_LEHGTH_X + 2 * radius, PADDING_LEHGTH_Y + 2 * radius);
+            //一定要从-90°开始，不然会出现最后一个圆弧画不出来的bug
+            float tempStart = -90;
+            for (int i = 0; i < mTempPies.size(); i++){
                 tempPaint.setColor(Color.argb(255, (int)(255*Math.random()),(int)(255*Math.random()),(int)(255*Math.random())));
-                tempStart += mTempPies.get(i - 1);
-                tempEnd += mTempPies.get(i);
-                canvas.drawArc(new RectF(PADDING_LEHGTH_X, PADDING_LEHGTH_Y, PADDING_LEHGTH_X + 2 * radius, PADDING_LEHGTH_Y + 2 * radius), tempStart, tempEnd, true, tempPaint);
+                float tempEnd = mTempPies.get(i);
+                canvas.drawArc(rectF, tempStart, tempEnd, true, tempPaint);
+                canvas.drawArc(rectF, tempStart, tempEnd, true, mPaint);
+                tempStart += tempEnd;
             }
         }
     }
