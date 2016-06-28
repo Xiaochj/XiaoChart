@@ -66,8 +66,6 @@ public class HistogramView extends BaseView{
                 }
             }
         }
-        mDatas = null;
-        mHolderList = null;
     }
 
     PopupWindow popupWindow;
